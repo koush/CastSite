@@ -1,0 +1,312 @@
+/* 
+ * Copyright 2013 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+**/
+
+@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700);
+
+/* ------------------------------------------------- */
+/* Animations                                        */
+/* ------------------------------------------------- */
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes loading {
+  0% {
+    -webkit-transform: scaleX(0);
+    margin-left: -50px;
+  }
+  to {
+    -webkit-transform: scaleX(5);
+    margin-left: 120%;
+  }
+}
+
+/* ------------------------------------------------- */
+/* Player                                            */
+/* ------------------------------------------------- */
+
+body {
+  background-color: #000;
+}
+
+.player {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #f1f1f1;
+  font-family: 'Open Sans',sans-serif;
+  font-weight: 300;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.player.idle, .player.done {
+  background-image: url('done.png');
+}
+
+.player img, .player video {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.player.image img, .player.video.buffering video, 
+.player.video.playing video, .player.video.paused video {
+  display: block;
+}
+
+.player .overlay {
+  display: none;
+}
+
+.player.launching .overlay {
+  display: block;
+  position: absolute;
+  left: 96px;
+  right: 96px;
+  bottom: 96px;
+  top: 96px;
+}
+
+/* ------------------------------------------------- */
+/* Branding                                          */
+/* ------------------------------------------------- */
+
+.player .logo {
+  display: none;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: bottom;
+}
+
+.player.launching .logo {
+  display: block;
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+}
+
+.player:not(.launching)  .logo {
+  display: block;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-bottom: 72px;
+}
+
+.player.video.playing .logo {
+  display: none;
+}
+
+/* ------------------------------------------------- */
+/* Media Info                                        */
+/* ------------------------------------------------- */
+
+.player.audio.buffering .overlay, .player.audio.loading .overlay,
+.player.audio.paused .overlay, .player.audio.playing .overlay,
+.player.audio.seeking .overlay, .player.video.buffering .overlay,
+.player.video.loading .overlay, .player.video.paused .overlay,
+.player.video.seeking .overlay {
+  display: block;
+  position: absolute;
+  left: 96px;
+  right: 96px;
+  bottom: 96px;
+}
+
+.player.video.buffering .media-artwork,
+.player.video.buffering .media-info,
+.player.video.paused .media-artwork,
+.player.video.paused .media-info,
+.player.video.seeking .media-artwork,
+.player.video.seeking .media-info {
+  display: none;
+}
+.player .media-artwork {
+  background-size: contain;
+  background-position: bottom;
+  background-repeat: no-repeat;
+}
+
+.player .media-info .media-title {
+  color: #ddd;
+  line-height: 100%;
+  font-size: 66px;
+  padding: 5px;
+}
+
+.player .media-info .media-subtitle {
+  color: #999;
+  padding: 5px;
+  line-height: 100%;
+  font-size: 33px;
+}
+
+.player.audio .media-artwork {
+  width: 576px;
+  height: 576px;
+}
+
+.player.video .media-artwork {
+  width: 144px;
+  height: 215px;
+  float: left;
+  margin-right: 20px;
+  margin-bottom: 64px;
+}
+
+.player.video .media-info {
+  display: table-cell;
+  height: 279px;
+  vertical-align: bottom;
+  padding-bottom: 64px;
+}
+
+.player.launching .controls, .player.launching .media-info,
+.player.launching .media-artwork {
+  display: none;
+}
+
+.player .controls {
+  height: 45px;
+}
+
+.player.audio .controls {
+  width: 576px;
+}
+
+.player.video .controls {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.player .controls-play-pause {
+  background-size: cover;
+  border: 0;
+  height: 44px;
+  width: 44px;
+  float: left;
+}
+
+.player.buffering .controls-play-pause {
+  background-image: url("assets/buffering.png");
+  -webkit-animation: spin 1s infinite linear;
+}
+
+.player.paused .controls-play-pause {
+  background-image: url("assets/paused.png");
+}
+
+.player.playing .controls-play-pause {
+  display: none;
+}
+
+.player .controls-progress {
+  height: 12px;
+  background-color: rgba(255,255,255,0.2);
+  margin-top: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.player .controls-progress-inner {
+  height: 100%;
+  background-color: #3563ae;
+}
+
+.player .controls-progress-thumb {
+  height: 100%;
+  width: 4px;
+  background-color: rgba(255,255,255,0.5);
+  position: absolute;
+  top: 0;
+  margin-left: -3px;
+  margin-top: -2px;
+  padding-bottom: 4px;
+}
+
+.player .controls-cur-time, .player .controls-total-time {
+  font-size: 24px;
+  line-height: 44px;
+  margin: 0 15px;
+}
+
+.player .controls-cur-time {
+  float: left;
+}
+
+.player .controls-total-time {
+  float: right;
+}
+
+.player.audio .controls {
+  height: 12px;
+  margin: 5px 0 15px;
+}
+
+.player.audio .controls-progress {
+  margin-top: 0;
+}
+
+.player.audio .controls-cur-time, .player.audio .controls-total-time,
+.player.audio .controls-play-pause, .player.audio.loading .controls-progress-thumb,
+.player.video.loading .controls-cur-time, .player.video.loading .controls-total-time,
+.player.video.loading .controls-progress-thumb, .player.video.loading .controls-play-pause {
+  display: none;
+}
+
+.player.loading .controls-progress-inner {
+  width: 50px !important;
+  -webkit-animation: loading 1s infinite ease-in;
+}
+
+/* ------------------------------------------------- */
+/* Skin                                              */
+/* ------------------------------------------------- */
+
+.player {
+  background-image: url("assets/background.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.player.launching .logo {
+  background-image: url("assets/logo.png");
+  margin-top: -28px;
+  margin-left: -38px;
+  width: 76px;
+  height: 57px;
+}
+
+.player.playing .controls-cur-time {
+  margin-left: 0;
+}
