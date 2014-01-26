@@ -1,5 +1,5 @@
 /**
- * Copyright 2013 Google Inc. All Rights Reserved.
+ * Copyright 2014 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -113,7 +113,10 @@ sampleplayer.State = {
 window.onload = function() {
   var userAgent = window.navigator.userAgent;
   var playerDiv = document.getElementById('player');
-
+// If you want to do some development using the Chrome browser, and then run on
+// a Chromecast you can check the userAgent to see what your running on, then
+// you would only initialize the receiver code when you are actually on a
+// Chromecast device.
   if (!((userAgent.indexOf('CrKey') > -1) || (userAgent.indexOf('TV') > -1))) {
 	  window.player = new sampleplayer.CastPlayer(playerDiv);
   } else {
@@ -148,6 +151,9 @@ sampleplayer.CastPlayer = function(element) {
    * @private {Element}
    */
   this.element_ = element;
+// We want to know when the user changes from watching our content to watching
+// another element, such as broadcast TV, or another HDMI port.  This will only
+// fire when CEC supports it in the TV.
   this.element_.ownerDocument.addEventListener(
       'webkitvisibilitychange', this.onVisibilityChange_.bind(this), false);
 
@@ -252,7 +258,7 @@ sampleplayer.CastPlayer.prototype.setState_ = function(state, crossfade, delay){
       self.state_ = state;
       self.element_.className = 'player ' + (self.type_ || '') + ' ' + state;
       self.setIdleTimeout_(sampleplayer.IDLE_TIMEOUT[state.toUpperCase()]);
-      window.console.log('setState(%o)', state);
+      console.log('setState(%o)', state);
     } else {
       sampleplayer.fadeOut_(self.element_, 0.75, function() {
         self.setState_(state, false);
@@ -267,10 +273,10 @@ sampleplayer.CastPlayer.prototype.setState_ = function(state, crossfade, delay){
  *
  */
 sampleplayer.CastPlayer.prototype.onStalled_ = function() {
-  window.console.log('onStalled');
+  console.log('onStalled');
   this.setState_(sampleplayer.State.BUFFERING, false);
   if (this.mediaElement_.currentTime) {
-    this.mediaElement_.load();
+    this.mediaElement_.load();  // see if we can restart the process
   }
 };
 
@@ -279,7 +285,7 @@ sampleplayer.CastPlayer.prototype.onStalled_ = function() {
  *
  */
 sampleplayer.CastPlayer.prototype.onBuffering_ = function() {
-  window.console.log('onBuffering');
+  console.log('onBuffering');
   if (this.state_ != sampleplayer.State.LOADING) {
     this.setState_(sampleplayer.State.BUFFERING, false);
   }
@@ -290,7 +296,7 @@ sampleplayer.CastPlayer.prototype.onBuffering_ = function() {
  *
  */
 sampleplayer.CastPlayer.prototype.onPlaying_ = function() {
-  window.console.log('onPlaying');
+  console.log('onPlaying');
   var isLoading = this.state_ == sampleplayer.State.LOADING;
   var xfade = isLoading;
   var delay = !isLoading ? 0 : 3000;      // 3 seconds
@@ -302,7 +308,7 @@ sampleplayer.CastPlayer.prototype.onPlaying_ = function() {
  *
  */
 sampleplayer.CastPlayer.prototype.onPause_ = function() {
-  window.console.log('onPause');
+  console.log('onPause');
   if (this.state_ != sampleplayer.State.DONE) {
     this.setState_(sampleplayer.State.PAUSED, false);
   }
@@ -314,7 +320,7 @@ sampleplayer.CastPlayer.prototype.onPause_ = function() {
  *
  */
 sampleplayer.CastPlayer.prototype.onStop_ = function() {
-  window.console.log('onStop');
+  console.log('onStop');
   var self = this;
   sampleplayer.fadeOut_(self.element_, 0.75, function() {
     self.mediaElement_.pause();
@@ -331,7 +337,7 @@ sampleplayer.CastPlayer.prototype.onStop_ = function() {
  *
  */
 sampleplayer.CastPlayer.prototype.onEnded_ = function() {
-  window.console.log('onEnded');
+  console.log('onEnded');
   this.setState_(sampleplayer.State.DONE, true);
 };
 
@@ -356,7 +362,7 @@ sampleplayer.CastPlayer.prototype.onProgress_ = function() {
  *
  */
 sampleplayer.CastPlayer.prototype.onSeekStart_ = function() {
-  window.console.log('onSeekStart');
+  console.log('onSeekStart');
   clearTimeout(this.seekingTimeout_);
   this.element_.classList.add('seeking');
 };
@@ -366,7 +372,7 @@ sampleplayer.CastPlayer.prototype.onSeekStart_ = function() {
  *
  */
 sampleplayer.CastPlayer.prototype.onSeekEnd_ = function() {
-  window.console.log('onSeekEnd');
+  console.log('onSeekEnd');
   clearTimeout(this.seekingTimeout_);
   this.seekingTimeout_ = sampleplayer.addClassWithTimeout_(this.element_,
       'seeking', 3000);
@@ -379,7 +385,7 @@ sampleplayer.CastPlayer.prototype.onSeekEnd_ = function() {
  *
  */
 sampleplayer.CastPlayer.prototype.onVisibilityChange_ = function() {
-  window.console.log('onVisibilityChange');
+  console.log('onVisibilityChange');
   if (document.webkitHidden) {
     this.mediaElement_.pause();
   } else {
@@ -392,7 +398,7 @@ sampleplayer.CastPlayer.prototype.onVisibilityChange_ = function() {
  *
  */
 sampleplayer.CastPlayer.prototype.onIdle_ = function() {
-  window.console.log('onIdle');
+  console.log('onIdle');
   if (this.state_ != sampleplayer.State.IDLE) {
     this.setState_(sampleplayer.State.IDLE, true);
   } else {
@@ -409,7 +415,7 @@ sampleplayer.CastPlayer.prototype.onIdle_ = function() {
  *
  */
 sampleplayer.CastPlayer.prototype.onError_ = function() {
-  window.console.log('onError');
+  console.log('onError');
   this.setState_(sampleplayer.State.DONE, true);
 };
 
