@@ -59,10 +59,7 @@ window.sampleplayer = window.sampleplayer || {};
 sampleplayer.IDLE_TIMEOUT = {
   LAUNCHING: 30 * 1000,    // 30 seconds
   LOADING: 3000 * 1000,    // 50 minutes
-  PAUSED: 30 * 1000,       // 10 minutes normally, use 30 seconds for demo
   STALLED: 30 * 1000,      // 30 seconds
-  DONE: 30 * 1000,         // 5 minutes normally, use 30 seconds for demo
-  IDLE: 30 * 1000          // 5 minutes normally, use 30 seconds for demo
 };
 
 /**
@@ -72,7 +69,9 @@ sampleplayer.IDLE_TIMEOUT = {
  */
 sampleplayer.Type = {
   IMAGE: 'image',
-  VIDEO: 'video'
+  VIDEO: 'video',
+  DASH: 'dash',
+  HLS: 'hls'
 };
 
 /**
@@ -123,6 +122,8 @@ window.onload = function() {
 	  window.castreceiver = cast.receiver.CastReceiverManager.getInstance();
 	  window.player = new sampleplayer.CastPlayer(playerDiv);
 	  window.castreceiver.start(window.castreceiver);
+    cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
+    cast.player.api.setLoggerLevel(cast.player.api.LoggerLevel.DEBUG);
   }
 }
 
@@ -236,6 +237,12 @@ sampleplayer.CastPlayer.prototype.setContentType_ = function(mimeType) {
     this.type_ = sampleplayer.Type.IMAGE;
   } else if (mimeType.indexOf('video/') == 0) {
     this.type_ = sampleplayer.Type.VIDEO;
+  }
+  else if (mimeType.indexOf('application/x-mpegurl') == 0) {
+    this.type_ = sampleplayer.Type.HLS;
+  }
+  else if (mimeType.indexOf('application/dash+xml') == 0) {
+    this.type_ = sampleplayer.Type.DASH;
   }
 };
 
@@ -456,12 +463,72 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
       };
       self.imageElement_.src = contentId || '';
       self.mediaElement_.removeAttribute('src');
+      if (window.hostPlayer) {
+        window.hostPlayer.unload();
+        window.hostPlayer = null;
+      }
+      window.host = null;
+      window.hostProtocol = null;
       break;
     case sampleplayer.Type.VIDEO:
       self.imageElement_.onload = null;
       self.imageElement_.removeAttribute('src');
+      if (window.hostPlayer) {
+        window.hostPlayer.unload();
+        window.hostPlayer = null;
+      }
+      window.host = null;
+      window.hostProtocol = null;
       self.mediaElement_.autoplay = autoplay || true;
       self.mediaElement_.src = contentId || '';
+      break;
+    case sampleplayer.Type.HLS:
+      self.imageElement_.onload = null;
+      self.imageElement_.removeAttribute('src');
+      self.mediaElement_.autoplay = autoplay || true;
+      self.mediaElement_.removeAttribute('src');
+      if (window.hostPlayer) {
+        window.hostPlayer.unload();
+        window.hostPlayer = null;
+      }
+      window.host = null;
+      window.hostProtocol = null;
+
+      window.host = new cast.player.api.Host({'mediaElement':self.mediaElement_, 'url':contentId});
+      host.onError = function(errorCode) {
+        console.log("Fatal Error - "+errorCode);
+        if (window.hostPlayer) {
+          window.hostPlayer.unload();
+          window.hostPlayer = null;
+        }
+      };
+      window.hostPlayer = new cast.player.api.Player(host);
+      window.hostProtocol = cast.player.api.CreateHlsStreamingProtocol(host);
+      window.hostPlayer.load(hostProtocol, 0);
+      break;
+    case sampleplayer.Type.DASH:
+      self.imageElement_.onload = null;
+      self.imageElement_.removeAttribute('src');
+      self.mediaElement_.autoplay = autoplay || true;
+      self.mediaElement_.removeAttribute('src');
+      if (window.hostPlayer) {
+        window.hostPlayer.unload();
+        window.hostPlayer = null;
+      }
+      window.host = null;
+      window.hostProtocol = null;
+
+      window.host = new cast.player.api.Host({'mediaElement':self.mediaElement_, 'url':contentId});
+      host.onError = function(errorCode) {
+        console.log("Fatal Error - "+errorCode);
+        if (window.hostPlayer) {
+          window.hostPlayer.unload();
+          window.hostPlayer = null;
+        }
+      };
+      window.hostPlayer = new cast.player.api.Player(host);
+      window.hostProtocol = cast.player.api.CreateDashStreamingProtocol(host);
+      window.hostPlayer.load(hostProtocol, 0);
       break;
   }
 };
