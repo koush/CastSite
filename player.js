@@ -471,8 +471,8 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
       };
       $(self.mediaElement_).hide();
       $(self.imageElement_).hide();
-      $(this).css('width', '');
-      $(this).css('height', '');
+      $(self.imageElement_).css('width', '');
+      $(self.imageElement_).css('height', '');
       $(self.imageElement_).load(function() {
         var clampWidth = $('#player').innerWidth();
         var clampHeight = $('#player').innerHeight();
