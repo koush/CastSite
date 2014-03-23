@@ -120,14 +120,13 @@ window.onload = function() {
 	  window.player = new sampleplayer.CastPlayer(playerDiv);
   } else {
 	  window.castreceiver = cast.receiver.CastReceiverManager.getInstance();
+    window.castreceiver.getCastMessageBus('urn:x-cast:com.koushikdutta.cast').onMessage = function(e) {
+      console.log(e);
+    }
 	  window.player = new sampleplayer.CastPlayer(playerDiv);
 	  window.castreceiver.start(window.castreceiver);
     cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
     cast.player.api.setLoggerLevel(cast.player.api.LoggerLevel.DEBUG);
-
-    window.castreceiver.getCastMessageBus('urn:x-cast:com.koushikdutta.cast').onMessage = function(e) {
-      console.log(e);
-    }
   }
 }
 
