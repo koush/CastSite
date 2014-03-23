@@ -314,3 +314,15 @@ body {
 .player.playing .controls-cur-time {
   margin-left: 0;
 }
+
+.player .subtitles {
+  position: fixed;
+  z-index: 1;
+  bottom: 0;
+  width: 100%;
+}
+
+.player .subtitles center {
+  margin-bottom: 50px;
+  font-size: 32px;
+}
