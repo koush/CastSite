@@ -88,9 +88,6 @@ body {
   margin: auto;
 }
 
-.player video {
-}
-
 .player.image img, .player.video.buffering video, 
 .player.video.playing video, .player.video.paused video {
   display: block;

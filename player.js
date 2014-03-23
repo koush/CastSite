@@ -471,12 +471,16 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
       };
       self.imageElement_.src = contentId || '';
       self.mediaElement_.removeAttribute('src');
+      $(self.mediaElement_).hide();
+      $(self.imageElement_).show();
       break;
     case sampleplayer.Type.VIDEO:
       self.imageElement_.onload = null;
       self.imageElement_.removeAttribute('src');
       self.mediaElement_.autoplay = autoplay || true;
       self.mediaElement_.src = contentId || '';
+      $(self.mediaElement_).show();
+      $(self.imageElement_).hide();
       break;
     case sampleplayer.Type.HLS:
       self.imageElement_.onload = null;
@@ -495,6 +499,8 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
       window.hostProtocol = cast.player.api.CreateHlsStreamingProtocol(host);
       window.hostPlayer = new cast.player.api.Player(host);
       window.hostPlayer.load(hostProtocol, 0);
+      $(self.mediaElement_).show();
+      $(self.imageElement_).hide();
       break;
     case sampleplayer.Type.DASH:
       self.imageElement_.onload = null;
@@ -513,6 +519,8 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
       window.hostProtocol = cast.player.api.CreateDashStreamingProtocol(host);
       window.hostPlayer = new cast.player.api.Player(host);
       window.hostPlayer.load(hostProtocol, 0);
+      $(self.mediaElement_).show();
+      $(self.imageElement_).hide();
       break;
   }
 };
