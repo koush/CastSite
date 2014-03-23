@@ -456,6 +456,14 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
       );
   self.setContentType_(contentType);
   self.setState_(sampleplayer.State.LOADING, false);
+
+  if (window.hostPlayer) {
+    window.hostPlayer.unload();
+    window.hostPlayer = null;
+  }
+  window.host = null;
+  window.hostProtocol = null;
+
   switch (self.type_) {
     case sampleplayer.Type.IMAGE:
       self.imageElement_.onload = function() {
@@ -463,22 +471,10 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
       };
       self.imageElement_.src = contentId || '';
       self.mediaElement_.removeAttribute('src');
-      if (window.hostPlayer) {
-        window.hostPlayer.unload();
-        window.hostPlayer = null;
-      }
-      window.host = null;
-      window.hostProtocol = null;
       break;
     case sampleplayer.Type.VIDEO:
       self.imageElement_.onload = null;
       self.imageElement_.removeAttribute('src');
-      if (window.hostPlayer) {
-        window.hostPlayer.unload();
-        window.hostPlayer = null;
-      }
-      window.host = null;
-      window.hostProtocol = null;
       self.mediaElement_.autoplay = autoplay || true;
       self.mediaElement_.src = contentId || '';
       break;
@@ -487,12 +483,6 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
       self.imageElement_.removeAttribute('src');
       self.mediaElement_.autoplay = autoplay || true;
       self.mediaElement_.removeAttribute('src');
-      if (window.hostPlayer) {
-        window.hostPlayer.unload();
-        window.hostPlayer = null;
-      }
-      window.host = null;
-      window.hostProtocol = null;
 
       window.host = new cast.player.api.Host({'mediaElement':self.mediaElement_, 'url':contentId});
       host.onError = function(errorCode) {
@@ -511,12 +501,6 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
       self.imageElement_.removeAttribute('src');
       self.mediaElement_.autoplay = autoplay || true;
       self.mediaElement_.removeAttribute('src');
-      if (window.hostPlayer) {
-        window.hostPlayer.unload();
-        window.hostPlayer = null;
-      }
-      window.host = null;
-      window.hostProtocol = null;
 
       window.host = new cast.player.api.Host({'mediaElement':self.mediaElement_, 'url':contentId});
       host.onError = function(errorCode) {
