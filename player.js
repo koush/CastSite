@@ -124,6 +124,10 @@ window.onload = function() {
 	  window.castreceiver.start(window.castreceiver);
     cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
     cast.player.api.setLoggerLevel(cast.player.api.LoggerLevel.DEBUG);
+
+    window.castreceiver.getCastMessageBus('urn:x-cast:com.koushikdutta.cast').onMessage = function(e) {
+      console.log(e);
+    }
   }
 }
 
