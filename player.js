@@ -282,8 +282,8 @@ sampleplayer.CastPlayer.prototype.setState_ = function(state, crossfade, delay){
 sampleplayer.CastPlayer.prototype.onStalled_ = function() {
   console.log('onStalled');
   this.setState_(sampleplayer.State.BUFFERING, false);
-  if (this.mediaElement_.currentTime) {
-//    this.mediaElement_.load();  // see if we can restart the process
+  if (this.mediaElement_.currentTime && !window.hostPlayer) {
+   this.mediaElement_.load();  // see if we can restart the process
   }
 };
 
@@ -469,10 +469,26 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
       self.imageElement_.onload = function() {
         self.setState_(sampleplayer.State.PAUSED, false);
       };
+      $(self.mediaElement_).hide();
+      $(self.imageElement_).hide();
+      $(self.imageElement_).load(function() {
+        var clampWidth = $('#player').innerWidth();
+        var clampHeight = $('#player').innerHeight();
+        var xratio = $(this).width() / clampWidth;
+        var yratio = $(this).height() / clampHeight;
+        var ratio = Math.max(xratio, yratio);
+        var w = $(this).width() / ratio;
+        var h = $(this).height() / ratio;
+        var ml = (clampWidth - w) / 2;
+        var mt = (clampHeight - h) / 2;
+        $(this).css('margin-left', ml);
+        $(this).css('margin-top', mt);
+        $(this).width(w);
+        $(this).height(h);
+        $(this).show();
+      });
       self.imageElement_.src = contentId || '';
       self.mediaElement_.removeAttribute('src');
-      $(self.mediaElement_).hide();
-      $(self.imageElement_).show();
       break;
     case sampleplayer.Type.VIDEO:
       self.imageElement_.onload = null;

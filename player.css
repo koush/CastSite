@@ -80,14 +80,6 @@ body {
   height: 100%;
 }
 
-.player img {
-/*  width: auto;*/
-  height : 100%;
-/*  max-height: 100%;*/
-/*  max-width: 100%;*/
-  margin: auto;
-}
-
 .player.image img, .player.video.buffering video, 
 .player.video.playing video, .player.video.paused video {
   display: block;
