@@ -283,7 +283,7 @@ sampleplayer.CastPlayer.prototype.onStalled_ = function() {
   console.log('onStalled');
   this.setState_(sampleplayer.State.BUFFERING, false);
   if (this.mediaElement_.currentTime) {
-    this.mediaElement_.load();  // see if we can restart the process
+//    this.mediaElement_.load();  // see if we can restart the process
   }
 };
 
