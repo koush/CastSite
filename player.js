@@ -207,7 +207,6 @@ sampleplayer.CastPlayer = function(element) {
    * @private {cast.receiver.MediaManager}
    */
   this.mediaManager_ = new cast.receiver.MediaManager(this.mediaElement_);
-  this.mediaManager_.onLoadOrig = this.mediaManager_.onLoad;
   this.mediaManager_.onLoad = this.onLoad_.bind(this);
   this.mediaManager_.onStop = this.onStop_.bind(this);
 
@@ -500,7 +499,6 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
     self.mediaElement_.src = contentId || '';
     $(self.mediaElement_).show();
     $(self.imageElement_).hide();
-    window.mediaManager_.onLoadOrig(event);
     return;
   }
 
