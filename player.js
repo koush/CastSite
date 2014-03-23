@@ -492,8 +492,8 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
           window.hostPlayer = null;
         }
       };
-      window.hostPlayer = new cast.player.api.Player(host);
       window.hostProtocol = cast.player.api.CreateHlsStreamingProtocol(host);
+      window.hostPlayer = new cast.player.api.Player(host);
       window.hostPlayer.load(hostProtocol, 0);
       break;
     case sampleplayer.Type.DASH:
@@ -510,8 +510,8 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
           window.hostPlayer = null;
         }
       };
-      window.hostPlayer = new cast.player.api.Player(host);
       window.hostProtocol = cast.player.api.CreateDashStreamingProtocol(host);
+      window.hostPlayer = new cast.player.api.Player(host);
       window.hostPlayer.load(hostProtocol, 0);
       break;
   }
