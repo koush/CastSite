@@ -207,6 +207,7 @@ sampleplayer.CastPlayer = function(element) {
    * @private {cast.receiver.MediaManager}
    */
   this.mediaManager_ = new cast.receiver.MediaManager(this.mediaElement_);
+  this.mediaManager_.onLoadOrig = this.mediaManager_.onLoad;
   this.mediaManager_.onLoad = this.onLoad_.bind(this);
   this.mediaManager_.onStop = this.onStop_.bind(this);
 
@@ -464,83 +465,71 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
   window.host = null;
   window.hostProtocol = null;
 
-  switch (self.type_) {
-    case sampleplayer.Type.IMAGE:
-      self.imageElement_.onload = function() {
-        self.setState_(sampleplayer.State.PAUSED, false);
-      };
-      $(self.mediaElement_).hide();
-      $(self.imageElement_).hide();
-      $(self.imageElement_).css('width', '');
-      $(self.imageElement_).css('height', '');
-      $(self.imageElement_).load(function() {
-        var clampWidth = $('#player').innerWidth();
-        var clampHeight = $('#player').innerHeight();
-        var xratio = $(this).width() / clampWidth;
-        var yratio = $(this).height() / clampHeight;
-        var ratio = Math.max(xratio, yratio);
-        var w = $(this).width() / ratio;
-        var h = $(this).height() / ratio;
-        var ml = (clampWidth - w) / 2;
-        var mt = (clampHeight - h) / 2;
-        $(this).css('margin-left', ml);
-        $(this).css('margin-top', mt);
-        $(this).width(w);
-        $(this).height(h);
-        $(this).show();
-      });
-      self.imageElement_.src = contentId || '';
-      self.mediaElement_.removeAttribute('src');
-      break;
-    case sampleplayer.Type.VIDEO:
-      self.imageElement_.onload = null;
-      self.imageElement_.removeAttribute('src');
-      self.mediaElement_.autoplay = autoplay || true;
-      self.mediaElement_.src = contentId || '';
-      $(self.mediaElement_).show();
-      $(self.imageElement_).hide();
-      break;
-    case sampleplayer.Type.HLS:
-      self.imageElement_.onload = null;
-      self.imageElement_.removeAttribute('src');
-      self.mediaElement_.autoplay = autoplay || true;
-      self.mediaElement_.removeAttribute('src');
-
-      window.host = new cast.player.api.Host({'mediaElement':self.mediaElement_, 'url':contentId});
-      host.onError = function(errorCode) {
-        console.log("Fatal Error - "+errorCode);
-        if (window.hostPlayer) {
-          window.hostPlayer.unload();
-          window.hostPlayer = null;
-        }
-      };
-      window.hostProtocol = cast.player.api.CreateHlsStreamingProtocol(host);
-      window.hostPlayer = new cast.player.api.Player(host);
-      window.hostPlayer.load(hostProtocol, 0);
-      $(self.mediaElement_).show();
-      $(self.imageElement_).hide();
-      break;
-    case sampleplayer.Type.DASH:
-      self.imageElement_.onload = null;
-      self.imageElement_.removeAttribute('src');
-      self.mediaElement_.autoplay = autoplay || true;
-      self.mediaElement_.removeAttribute('src');
-
-      window.host = new cast.player.api.Host({'mediaElement':self.mediaElement_, 'url':contentId});
-      host.onError = function(errorCode) {
-        console.log("Fatal Error - "+errorCode);
-        if (window.hostPlayer) {
-          window.hostPlayer.unload();
-          window.hostPlayer = null;
-        }
-      };
-      window.hostProtocol = cast.player.api.CreateDashStreamingProtocol(host);
-      window.hostPlayer = new cast.player.api.Player(host);
-      window.hostPlayer.load(hostProtocol, 0);
-      $(self.mediaElement_).show();
-      $(self.imageElement_).hide();
-      break;
+  if (self.type_ == sampleplayer.Type.IMAGE) {
+    self.imageElement_.onload = function() {
+      self.setState_(sampleplayer.State.PAUSED, false);
+    };
+    $(self.mediaElement_).hide();
+    $(self.imageElement_).hide();
+    $(self.imageElement_).css('width', '');
+    $(self.imageElement_).css('height', '');
+    $(self.imageElement_).load(function() {
+      var clampWidth = $('#player').innerWidth();
+      var clampHeight = $('#player').innerHeight();
+      var xratio = $(this).width() / clampWidth;
+      var yratio = $(this).height() / clampHeight;
+      var ratio = Math.max(xratio, yratio);
+      var w = $(this).width() / ratio;
+      var h = $(this).height() / ratio;
+      var ml = (clampWidth - w) / 2;
+      var mt = (clampHeight - h) / 2;
+      $(this).css('margin-left', ml);
+      $(this).css('margin-top', mt);
+      $(this).width(w);
+      $(this).height(h);
+      $(this).show();
+    });
+    self.imageElement_.src = contentId || '';
+    self.mediaElement_.removeAttribute('src');
+    return;
   }
+  if (self.type_ == sampleplayer.Type.VIDEO) {
+    self.imageElement_.onload = null;
+    self.imageElement_.removeAttribute('src');
+    self.mediaElement_.autoplay = autoplay || true;
+    self.mediaElement_.src = contentId || '';
+    $(self.mediaElement_).show();
+    $(self.imageElement_).hide();
+    window.mediaManager_.onLoadOrig(event);
+    return;
+  }
+
+  self.imageElement_.onload = null;
+  self.imageElement_.removeAttribute('src');
+  self.mediaElement_.autoplay = autoplay || true;
+  self.mediaElement_.removeAttribute('src');
+
+  window.host = new cast.player.api.Host({'mediaElement':self.mediaElement_, 'url':contentId});
+  host.onError = function(errorCode) {
+    console.log("Fatal Error - "+errorCode);
+    if (window.hostPlayer) {
+      window.hostPlayer.unload();
+      window.hostPlayer = null;
+    }
+  };
+  if (self.type_ == sampleplayer.Type.HLS) {
+    window.hostProtocol = cast.player.api.CreateHlsStreamingProtocol(host);
+  }
+  else if (self.type_ == sampleplayer.Type.HLS) {
+    window.hostProtocol = cast.player.api.CreateDashStreamingProtocol(host);
+  }
+  else {
+    return;
+  }
+  window.hostPlayer = new cast.player.api.Player(host);
+  window.hostPlayer.load(hostProtocol, 0);
+  $(self.mediaElement_).show();
+  $(self.imageElement_).hide();
 };
 
 /**
