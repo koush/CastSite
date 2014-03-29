@@ -555,6 +555,9 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
     $(track).load(function() {
       $(self.mediaElement_).removeAttr('crossorigin');
       loadSrc();
+      $.each(self.mediaElement_.textTracks, function(i, t) {
+        t.mode = 'hidden';
+      });
     })
     return;
   }
