@@ -120,9 +120,6 @@ window.onload = function() {
 	  window.player = new sampleplayer.CastPlayer(playerDiv);
   } else {
 	  window.castreceiver = cast.receiver.CastReceiverManager.getInstance();
-    window.castreceiver.getCastMessageBus('urn:x-cast:com.koushikdutta.cast').onMessage = function(e) {
-      console.log(e);
-    }
 	  window.player = new sampleplayer.CastPlayer(playerDiv);
 	  window.castreceiver.start(window.castreceiver);
     cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
@@ -448,6 +445,12 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
   var subtitleElement = self.element_.querySelector('.media-subtitle');
   sampleplayer.setInnerText_(subtitleElement, subtitle);
 
+  var subtitleTrack = sampleplayer.getValue_(event.data, ['media', 'customData',
+      'subtitle']);
+  if (subtitleTrack) {
+    
+  }
+
   var artwork = sampleplayer.getValue_(event.data, ['media', 'metadata',
       'images', 0, 'url']);
   var artworkElement = self.element_.querySelector('.media-artwork');
@@ -495,19 +498,23 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
     self.mediaElement_.removeAttribute('src');
     return;
   }
+
+  self.imageElement_.onload = null;
+  self.imageElement_.removeAttribute('src');
+  self.mediaElement_.autoplay = autoplay || true;
+  $(self.mediaElement_).empty();
+  
+  var track = $('<track></track>');
+  $(track).attr('kind', 'subtitles');
+  $(track).attr('src', 'http://download.clockworkmod.com/test/test.vtt')
+
   if (self.type_ == sampleplayer.Type.VIDEO) {
-    self.imageElement_.onload = null;
-    self.imageElement_.removeAttribute('src');
-    self.mediaElement_.autoplay = autoplay || true;
     self.mediaElement_.src = contentId || '';
     $(self.mediaElement_).show();
     $(self.imageElement_).hide();
     return;
   }
 
-  self.imageElement_.onload = null;
-  self.imageElement_.removeAttribute('src');
-  self.mediaElement_.autoplay = autoplay || true;
   self.mediaElement_.removeAttribute('src');
 
   window.host = new cast.player.api.Host({'mediaElement':self.mediaElement_, 'url':contentId});
