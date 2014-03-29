@@ -546,7 +546,7 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
   }
 
   if (subtitleTrack) {
-    var track = $('<track default>');
+    var track = $('<track>');
     $(track).attr('kind', 'subtitles');
     $(track).attr('src', subtitleTrack);
     $(track).attr('srclang', 'English');
