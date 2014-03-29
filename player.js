@@ -508,6 +508,10 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
     $(track).attr('srclang', 'English');
     $(self.mediaElement_).attr('crossorigin', 'anonymous');
     $(self.mediaElement_).append(track);
+    $(self.track).load(function() {
+      console.log(arguments);
+    })
+    return;
   }
   $(self.mediaElement_).removeAttr('crossorigin');
 
