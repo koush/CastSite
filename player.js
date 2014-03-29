@@ -446,10 +446,7 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
   sampleplayer.setInnerText_(subtitleElement, subtitle);
 
   var subtitleTrack = sampleplayer.getValue_(event.data, ['media', 'customData',
-      'subtitle']);
-  if (subtitleTrack) {
-    
-  }
+      'subtitles']);
 
   var artwork = sampleplayer.getValue_(event.data, ['media', 'metadata',
       'images', 0, 'url']);
@@ -504,11 +501,15 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
   self.mediaElement_.autoplay = autoplay || true;
   $(self.mediaElement_).empty();
   
-  var track = $('<track default>');
-  $(track).attr('kind', 'subtitles');
-  $(track).attr('src', 'http://download.clockworkmod.com/test/test.vtt');
-  $(track).attr('srclang', 'English');
-  // $(self.mediaElement_).append(track);
+  if (subtitleTrack) {
+    var track = $('<track default>');
+    $(track).attr('kind', 'subtitles');
+    $(track).attr('src', subtitleTrack);
+    $(track).attr('srclang', 'English');
+    $(self.mediaElement_).attr('crossorigin', 'anonymous');
+    $(self.mediaElement_).append(track);
+  }
+  $(self.mediaElement_).removeAttr('crossorigin');
 
   if (self.type_ == sampleplayer.Type.VIDEO) {
     self.mediaElement_.src = contentId || '';
