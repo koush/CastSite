@@ -500,7 +500,43 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
   self.imageElement_.removeAttribute('src');
   self.mediaElement_.autoplay = autoplay || true;
   $(self.mediaElement_).empty();
-  
+
+  var loadSrc = null;
+
+  if (self.type_ == sampleplayer.Type.VIDEO) {
+    loadSrc = function() {
+      self.mediaElement_.src = contentId || '';
+      $(self.mediaElement_).show();
+      $(self.imageElement_).hide();
+    }
+  }
+  else {
+    loadSrc = function() {
+      self.mediaElement_.removeAttribute('src');
+      window.host = new cast.player.api.Host({'mediaElement':self.mediaElement_, 'url':contentId});
+      host.onError = function(errorCode) {
+        console.log("Fatal Error - "+errorCode);
+        if (window.hostPlayer) {
+          window.hostPlayer.unload();
+          window.hostPlayer = null;
+        }
+      };
+      if (self.type_ == sampleplayer.Type.HLS) {
+        window.hostProtocol = cast.player.api.CreateHlsStreamingProtocol(host);
+      }
+      else if (self.type_ == sampleplayer.Type.HLS) {
+        window.hostProtocol = cast.player.api.CreateDashStreamingProtocol(host);
+      }
+      else {
+        return;
+      }
+      window.hostPlayer = new cast.player.api.Player(host);
+      window.hostPlayer.load(hostProtocol, 0);
+      $(self.mediaElement_).show();
+      $(self.imageElement_).hide();
+    }
+  }
+
   if (subtitleTrack) {
     var track = $('<track default>');
     $(track).attr('kind', 'subtitles');
@@ -509,42 +545,11 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
     $(self.mediaElement_).attr('crossorigin', 'anonymous');
     $(self.mediaElement_).append(track);
     $(track).load(function() {
-      console.log(arguments);
+      $(self.mediaElement_).removeAttr('crossorigin');
+      loadSrc();
     })
     return;
   }
-  $(self.mediaElement_).removeAttr('crossorigin');
-
-  if (self.type_ == sampleplayer.Type.VIDEO) {
-    self.mediaElement_.src = contentId || '';
-    $(self.mediaElement_).show();
-    $(self.imageElement_).hide();
-    return;
-  }
-
-  self.mediaElement_.removeAttribute('src');
-
-  window.host = new cast.player.api.Host({'mediaElement':self.mediaElement_, 'url':contentId});
-  host.onError = function(errorCode) {
-    console.log("Fatal Error - "+errorCode);
-    if (window.hostPlayer) {
-      window.hostPlayer.unload();
-      window.hostPlayer = null;
-    }
-  };
-  if (self.type_ == sampleplayer.Type.HLS) {
-    window.hostProtocol = cast.player.api.CreateHlsStreamingProtocol(host);
-  }
-  else if (self.type_ == sampleplayer.Type.HLS) {
-    window.hostProtocol = cast.player.api.CreateDashStreamingProtocol(host);
-  }
-  else {
-    return;
-  }
-  window.hostPlayer = new cast.player.api.Player(host);
-  window.hostPlayer.load(hostProtocol, 0);
-  $(self.mediaElement_).show();
-  $(self.imageElement_).hide();
 };
 
 /**
