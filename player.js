@@ -508,6 +508,8 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
   $(track).attr('kind', 'subtitles');
   $(track).attr('src', 'http://download.clockworkmod.com/test/test.vtt');
   $(track).attr('srclang', 'English');
+  self.mediaElement_.crossorigin = "anonymous";
+  self.mediaElement_.crossOrigin = "anonymous";
   $(self.mediaElement_).append(track);
 
   if (self.type_ == sampleplayer.Type.VIDEO) {
