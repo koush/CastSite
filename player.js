@@ -121,7 +121,7 @@ window.onload = function() {
   } else {
     window.castreceiver = cast.receiver.CastReceiverManager.getInstance();
     window.castreceiver.getCastMessageBus('urn:x-cast:com.koushikdutta.cast').onMessage = function(e) {
-      $.each(this.mediaElement_.textTracks, function(i, t) {
+      $.each(player.mediaElement_.textTracks, function(i, t) {
         if (t.mode != 'showing')
           t.mode = 'showing';
         else
