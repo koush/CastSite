@@ -511,6 +511,7 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
 
   var loadSrc = null;
 
+  self.mediaElement_.removeAttribute('src');
   if (self.type_ == sampleplayer.Type.VIDEO) {
     loadSrc = function() {
       self.mediaElement_.src = contentId || '';
@@ -520,7 +521,6 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
   }
   else {
     loadSrc = function() {
-      self.mediaElement_.removeAttribute('src');
       window.host = new cast.player.api.Host({'mediaElement':self.mediaElement_, 'url':contentId});
       host.onError = function(errorCode) {
         console.log("Fatal Error - "+errorCode);
@@ -546,7 +546,7 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
   }
 
   if (subtitleTrack) {
-    var track = $('<track default>');
+    var track = $('<track>');
     $(track).attr('kind', 'subtitles');
     $(track).attr('src', subtitleTrack);
     $(track).attr('srclang', 'English');
