@@ -117,11 +117,19 @@ window.onload = function() {
 // you would only initialize the receiver code when you are actually on a
 // Chromecast device.
   if (!((userAgent.indexOf('CrKey') > -1) || (userAgent.indexOf('TV') > -1))) {
-	  window.player = new sampleplayer.CastPlayer(playerDiv);
+    window.player = new sampleplayer.CastPlayer(playerDiv);
   } else {
-	  window.castreceiver = cast.receiver.CastReceiverManager.getInstance();
-	  window.player = new sampleplayer.CastPlayer(playerDiv);
-	  window.castreceiver.start(window.castreceiver);
+    window.castreceiver = cast.receiver.CastReceiverManager.getInstance();
+    window.castreceiver.getCastMessageBus('urn:x-cast:com.koushikdutta.cast').onMessage = function(e) {
+      $.each(this.mediaElement_.textTracks, function(i, t) {
+        if (t.mode != 'showing')
+          t.mode = 'showing';
+        else
+          t.mode = 'hidden';
+      });
+    }
+    window.player = new sampleplayer.CastPlayer(playerDiv);
+    window.castreceiver.start(window.castreceiver);
     cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
     cast.player.api.setLoggerLevel(cast.player.api.LoggerLevel.DEBUG);
   }
@@ -372,9 +380,6 @@ sampleplayer.CastPlayer.prototype.onSeekStart_ = function() {
   console.log('onSeekStart');
   clearTimeout(this.seekingTimeout_);
   this.element_.classList.add('seeking');
-  $.each(this.mediaElement_.textTracks, function(i, t) {
-    t.mode = 'hidden';
-  });
 };
 
 /**
@@ -386,9 +391,6 @@ sampleplayer.CastPlayer.prototype.onSeekEnd_ = function() {
   clearTimeout(this.seekingTimeout_);
   this.seekingTimeout_ = sampleplayer.addClassWithTimeout_(this.element_,
       'seeking', 3000);
-  $.each(this.mediaElement_.textTracks, function(i, t) {
-    t.mode = 'showing';
-  });
 };
 
 /**
