@@ -372,6 +372,9 @@ sampleplayer.CastPlayer.prototype.onSeekStart_ = function() {
   console.log('onSeekStart');
   clearTimeout(this.seekingTimeout_);
   this.element_.classList.add('seeking');
+  $.each(this.mediaElement_.textTracks, function(i, t) {
+    t.mode = 'hidden';
+  });
 };
 
 /**
@@ -383,6 +386,9 @@ sampleplayer.CastPlayer.prototype.onSeekEnd_ = function() {
   clearTimeout(this.seekingTimeout_);
   this.seekingTimeout_ = sampleplayer.addClassWithTimeout_(this.element_,
       'seeking', 3000);
+  $.each(this.mediaElement_.textTracks, function(i, t) {
+    t.mode = 'showing';
+  });
 };
 
 /**
@@ -550,6 +556,8 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
     })
     return;
   }
+  
+  loadSrc();
 };
 
 /**
