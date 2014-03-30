@@ -69,6 +69,7 @@ sampleplayer.IDLE_TIMEOUT = {
  */
 sampleplayer.Type = {
   IMAGE: 'image',
+  AUDIO: 'audio',
   VIDEO: 'video',
   DASH: 'dash',
   HLS: 'hls'
@@ -245,6 +246,8 @@ sampleplayer.CastPlayer.prototype.setContentType_ = function(mimeType) {
     this.type_ = sampleplayer.Type.IMAGE;
   } else if (mimeType.indexOf('video/') == 0) {
     this.type_ = sampleplayer.Type.VIDEO;
+  } else if (mimeType.indexOf('audio/') == 0) {
+    this.type_ = sampleplayer.Type.AUDIO;
   }
   else if (mimeType.indexOf('application/x-mpegurl') == 0) {
     this.type_ = sampleplayer.Type.HLS;
@@ -512,7 +515,7 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
   var loadSrc = null;
 
   self.mediaElement_.removeAttribute('src');
-  if (self.type_ == sampleplayer.Type.VIDEO) {
+  if (self.type_ == sampleplayer.Type.VIDEO || self.type_ == sampleplayer.Type.AUDIO) {
     loadSrc = function() {
       self.mediaElement_.src = contentId || '';
       $(self.mediaElement_).show();
@@ -532,7 +535,7 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
       if (self.type_ == sampleplayer.Type.HLS) {
         window.hostProtocol = cast.player.api.CreateHlsStreamingProtocol(host);
       }
-      else if (self.type_ == sampleplayer.Type.HLS) {
+      else if (self.type_ == sampleplayer.Type.DASH) {
         window.hostProtocol = cast.player.api.CreateDashStreamingProtocol(host);
       }
       else {
