@@ -265,25 +265,12 @@ sampleplayer.CastPlayer.prototype.setContentType_ = function(mimeType) {
  * @param {boolean=} crossfade true if should cross fade between states
  * @param {number=} delay the amount of time (in ms) to wait
  */
-sampleplayer.CastPlayer.prototype.setState_ = function(state, crossfade, delay){
+sampleplayer.CastPlayer.prototype.setState_ = function(state){
   var self = this;
-  clearTimeout(self.delay_);
-  if (delay) {
-    var func = function() { self.setState_(state, crossfade); };
-    self.delay_ = setTimeout(func, delay);
-  } else {
-    if (!crossfade) {
-      self.state_ = state;
-      self.element_.className = 'player ' + (self.type_ || '') + ' ' + state;
-      self.setIdleTimeout_(sampleplayer.IDLE_TIMEOUT[state.toUpperCase()]);
-      console.log('setState(%o)', state);
-    } else {
-      sampleplayer.fadeOut_(self.element_, 0.75, function() {
-        self.setState_(state, false);
-        sampleplayer.fadeIn_(self.element_, 0.75);
-      });
-    }
-  }
+  self.state_ = state;
+  self.element_.className = 'player ' + (self.type_ || '') + ' ' + state;
+  self.setIdleTimeout_(sampleplayer.IDLE_TIMEOUT[state.toUpperCase()]);
+  console.log('setState(%o)', state);
 };
 
 /**
@@ -292,7 +279,7 @@ sampleplayer.CastPlayer.prototype.setState_ = function(state, crossfade, delay){
  */
 sampleplayer.CastPlayer.prototype.onStalled_ = function() {
   console.log('onStalled');
-  this.setState_(sampleplayer.State.BUFFERING, false);
+  this.setState_(sampleplayer.State.BUFFERING);
   if (this.mediaElement_.currentTime && !window.hostPlayer) {
    this.mediaElement_.load();  // see if we can restart the process
   }
@@ -305,7 +292,7 @@ sampleplayer.CastPlayer.prototype.onStalled_ = function() {
 sampleplayer.CastPlayer.prototype.onBuffering_ = function() {
   console.log('onBuffering');
   if (this.state_ != sampleplayer.State.LOADING) {
-    this.setState_(sampleplayer.State.BUFFERING, false);
+    this.setState_(sampleplayer.State.BUFFERING);
   }
 };
 
@@ -315,10 +302,7 @@ sampleplayer.CastPlayer.prototype.onBuffering_ = function() {
  */
 sampleplayer.CastPlayer.prototype.onPlaying_ = function() {
   console.log('onPlaying');
-  var isLoading = this.state_ == sampleplayer.State.LOADING;
-  var xfade = isLoading;
-  var delay = !isLoading ? 0 : 3000;      // 3 seconds
-  this.setState_(sampleplayer.State.PLAYING, xfade, delay);
+  this.setState_(sampleplayer.State.PLAYING);
 };
 
 /**
@@ -328,7 +312,7 @@ sampleplayer.CastPlayer.prototype.onPlaying_ = function() {
 sampleplayer.CastPlayer.prototype.onPause_ = function() {
   console.log('onPause');
   if (this.state_ != sampleplayer.State.DONE) {
-    this.setState_(sampleplayer.State.PAUSED, false);
+    this.setState_(sampleplayer.State.PAUSED);
   }
 };
 
@@ -344,7 +328,7 @@ sampleplayer.CastPlayer.prototype.onStop_ = function() {
     self.mediaElement_.pause();
     self.mediaElement_.removeAttribute('src');
     self.imageElement_.removeAttribute('src');
-    self.setState_(sampleplayer.State.DONE, false);
+    self.setState_(sampleplayer.State.DONE);
     sampleplayer.fadeIn_(self.element_, 0.75);
   });
 };
@@ -356,7 +340,7 @@ sampleplayer.CastPlayer.prototype.onStop_ = function() {
  */
 sampleplayer.CastPlayer.prototype.onEnded_ = function() {
   console.log('onEnded');
-  this.setState_(sampleplayer.State.DONE, true);
+  this.setState_(sampleplayer.State.DONE);
 };
 
 /**
@@ -418,7 +402,7 @@ sampleplayer.CastPlayer.prototype.onVisibilityChange_ = function() {
 sampleplayer.CastPlayer.prototype.onIdle_ = function() {
   console.log('onIdle');
   if (this.state_ != sampleplayer.State.IDLE) {
-    this.setState_(sampleplayer.State.IDLE, true);
+    this.setState_(sampleplayer.State.IDLE);
   } else {
     window.close();
   }
@@ -434,7 +418,7 @@ sampleplayer.CastPlayer.prototype.onIdle_ = function() {
  */
 sampleplayer.CastPlayer.prototype.onError_ = function() {
   console.log('onError');
-  this.setState_(sampleplayer.State.DONE, true);
+  this.setState_(sampleplayer.State.DONE);
 };
 
 /**
@@ -469,7 +453,7 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
   var contentType = sampleplayer.getValue_(event.data, ['media', 'contentType']
       );
   self.setContentType_(contentType);
-  self.setState_(sampleplayer.State.LOADING, false);
+  self.setState_(sampleplayer.State.LOADING);
 
   if (window.hostPlayer) {
     window.hostPlayer.unload();
@@ -480,7 +464,7 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
 
   if (self.type_ == sampleplayer.Type.IMAGE) {
     self.imageElement_.onload = function() {
-      self.setState_(sampleplayer.State.PAUSED, false);
+      self.setState_(sampleplayer.State.PAUSED);
     };
     $(self.mediaElement_).hide();
     $(self.imageElement_).hide();
