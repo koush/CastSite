@@ -11,14 +11,13 @@ function getValue(obj, keys) {
 
 window.onload = function() {
   window.controller = new Controller(window);
-  window.mediaElement = document.getElementById('video');
 
   window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
   window.castReceiverManager.getCastMessageBus('urn:x-cast:com.koushikdutta.cast').onMessage = function(e) {
     window.controller.toggleCaptions();
   }
   
-  window.mediaManager = new cast.receiver.MediaManager(window.mediaElement);
+  window.mediaManager = new cast.receiver.MediaManager(document.getElementById('video'));
   window.mediaManager.onLoad = function(event) {
     var info = {
       disableVisualizations: true,
@@ -31,6 +30,7 @@ window.onload = function() {
     }
     
     window.controller.play(info);
+    window.mediaManager.setMediaElement(document.getElementById('video'));
   }
 
   window.castReceiverManager.start(window.castReceiverManager);
