@@ -2,10 +2,27 @@ var host;
 var hostPlayer;
 var hostProtocol;
 
-function Controller(w) {
+function Controller(w, useXhr) {
   this.window = w;
   this.document = this.window.document;
   this.hookVideo();
+  this.useXhr = useXhr;
+}
+
+Controller.loadImage = function(img, url) {
+  if (!this.useXhr) {
+    img.src = url;
+    return;
+  }
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', url, true);
+  xhr.responseType = 'blob';
+  xhr.onload = function(e) {
+    img.src = thisWindow.URL.createObjectURL(this.response);
+  };
+
+  xhr.send();
 }
 
 Controller.prototype.getVideoElement = function() {
@@ -226,15 +243,8 @@ Controller.prototype.play = function(info) {
         $(bottomImage).toggleClass("transparent");
       }, 0);
     }); 
-   
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', url, true);
-    xhr.responseType = 'blob';
-    xhr.onload = function(e) {
-      otherImage.src = thisWindow.URL.createObjectURL(this.response);
-    };
 
-    xhr.send();
+    this.loadImage(otherImage, url);
   }
   else if (mime.indexOf('audio/') != -1) {
     this.showProgressBriefly();
@@ -256,14 +266,7 @@ Controller.prototype.play = function(info) {
     $(thisDocument).find('#song').text(info.title);
     $(thisDocument).find('#albumArt').attr('src', 'icon.png');
     if (info.albumArt) {
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', info.albumArt, true);
-      xhr.responseType = 'blob';
-      xhr.onload = function(e) {
-        $(thisDocument).find('#albumArt').attr('src',
-          thisWindow.URL.createObjectURL(this.response));
-      };
-      xhr.send();
+      this.loadImage($(thisDocument).find('#albumArt')[0], info.albumArt);
     }
   }
 }
