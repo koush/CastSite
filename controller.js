@@ -71,7 +71,6 @@ Controller.prototype.play = function(info) {
   }
   host = null;
   hostProtocol = null;
-  this.stopVideo();
 
   if (mime.indexOf('video/') != -1) {
     $(thisDocument).find('#crossfade img').hide();
@@ -140,6 +139,7 @@ Controller.prototype.play = function(info) {
     })
   }
   else if (mime.indexOf('image/') != -1) {
+    this.stopVideo();
     $(thisDocument).find('video').hide();
     $(thisDocument).find('#audio').hide();
     var imgs = $(thisDocument).find('#crossfade img');
@@ -189,6 +189,7 @@ Controller.prototype.play = function(info) {
     xhr.send();
   }
   else if (mime.indexOf('audio/') != -1) {
+    this.stopVideo();
     $(thisDocument).find('#crossfade img').hide();
     $(thisDocument).find('#audio').show();
     if (!info.disableVisualizations) {
