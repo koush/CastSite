@@ -221,8 +221,10 @@ Controller.prototype.play = function(info) {
       $(this).width(w);
       $(this).height(h);
       $(this).show();
-      $(topImage).toggleClass("transparent");
-      $(bottomImage).toggleClass("transparent");
+      setTimeout(function() {
+        $(topImage).toggleClass("transparent");
+        $(bottomImage).toggleClass("transparent");
+      }, 0);
     }); 
    
     var xhr = new XMLHttpRequest();
