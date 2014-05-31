@@ -97,8 +97,6 @@ Controller.prototype.play = function(info) {
     })
   }
   else if (mime.indexOf('application/x-mpegurl') === 0) {
-    if (true) return;
-
     $(thisDocument).find('#crossfade img').hide();
     var video = $(thisDocument).find('video');
     video.show();
