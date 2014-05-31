@@ -204,6 +204,7 @@ Controller.prototype.play = function(info) {
     }
     imgs.unbind('load');
     otherImage.src = '';
+    $(otherImage).hide();
     $(otherImage).load(function() {
       var player = $(thisDocument).find('#player');
       var clampWidth = player.innerWidth();
