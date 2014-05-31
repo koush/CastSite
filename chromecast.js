@@ -18,7 +18,6 @@ window.onload = function() {
   window.castReceiverManager.getCastMessageBus('urn:x-cast:com.koushikdutta.cast').onMessage = function(e) {
     controller.toggleCaptions();
   }
-  window.castReceiverManager.start();
   
   window.mediaManager.onLoad = function(event) {
     var info = {
@@ -33,4 +32,6 @@ window.onload = function() {
     
     window.controller.play(info);
   }
+
+  window.castReceiverManager.start();
 }
