@@ -59,14 +59,14 @@ Controller.prototype.mirror = function(sessionUrl) {
 }
 
 Controller.prototype.hookVideo = function() {
-  this.getVideoElement().ontimeupdate = function() {
+  this.getVideoElement().addEventListener('timeupdate', function() {
     var curTime = this.getVideoElement().currentTime;
     var totalTime = this.getVideoElement().duration;
     if (!isNaN(curTime) && !isNaN(totalTime)) {
       var pct = 100 * (curTime / totalTime);
       $(this.document).find('#progress')[0].style.width = pct + '%';
     }
-  }.bind(this);
+  }.bind(this));
   
   this.getVideoElement().addEventListener('playing', function() {
     this.showProgressBriefly();
