@@ -13,12 +13,12 @@ window.onload = function() {
   window.controller = new Controller(window);
   window.mediaElement = document.getElementById('video');
 
-  window.mediaManager = new cast.receiver.MediaManager(window.mediaElement);
   window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
   window.castReceiverManager.getCastMessageBus('urn:x-cast:com.koushikdutta.cast').onMessage = function(e) {
     controller.toggleCaptions();
   }
   
+  window.mediaManager = new cast.receiver.MediaManager(window.mediaElement);
   window.mediaManager.onLoad = function(event) {
     var info = {
       disableVisualizations: true,
