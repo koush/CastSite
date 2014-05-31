@@ -92,3 +92,27 @@ opacity:0;
   -o-transition: opacity 1s ease-in-out;
   transition: opacity 1s ease-in-out;
 }
+
+.progress {
+  display: none;
+}
+
+#progress-outer {
+  height: 12px;
+  background-color: rgba(255,255,255,0.2);
+  margin-bottom: 16px;
+  position: fixed;
+  width: 100%;
+  bottom: 0px;
+  overflow: hidden;
+}
+
+#progress {
+  height: 12px;
+  background-color: rgba(0,153,204,0.8);
+  margin-bottom: 16px;
+  position: fixed;
+  width: 0%;
+  bottom: 0px;
+  overflow: hidden;
+}

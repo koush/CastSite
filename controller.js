@@ -35,16 +35,19 @@ Controller.prototype.stop = function() {
 Controller.prototype.seek = function(position) {
   var v = this.getVideoElement();
   v.currentTime = position / 1000;
+  this.showProgressBriefly();
 }
 
 Controller.prototype.pause = function() {
   var v = this.getVideoElement();
   v.pause();
+  $(this.document).find('.progress').show();
 }
 
 Controller.prototype.resume = function() {
   var v = this.getVideoElement();
   v.play();
+  this.showProgressBriefly();
 }
 
 Controller.prototype.mirror = function(sessionUrl) {
@@ -53,6 +56,22 @@ Controller.prototype.mirror = function(sessionUrl) {
   var video = this.getVideoElement();
   $(video).show();
   connectMirrorSession(sessionUrl, video);
+}
+
+Controller.prototype.hookVideo = function() {
+  this.getVideoElement().ontimeupdate = function() {
+    var curTime = this.getVideoElement().currentTime;
+    var totalTime = this.getVideoElement().duration;
+    if (!isNaN(curTime) && !isNaN(totalTime)) {
+      var pct = 100 * (curTime / totalTime);
+      $(this.document).find('#progress')[0].style.width = pct + '%';
+    }
+  }.bind(this);
+}
+
+Controller.prototype.showProgressBriefly = function() {
+  $(this.document).find('.progress').show();
+  $(this.document).find('.progress').delay(3000).fadeOut();
 }
 
 Controller.prototype.play = function(info) {
@@ -73,6 +92,9 @@ Controller.prototype.play = function(info) {
   hostProtocol = null;
 
   if (mime.indexOf('video/') != -1) {
+    this.hookVideo();
+    this.showProgressBriefly();
+    
     $(thisDocument).find('#crossfade img').hide();
     var video = $(thisDocument).find('video');
     video.show();
@@ -97,6 +119,9 @@ Controller.prototype.play = function(info) {
     })
   }
   else if (mime.indexOf('application/x-mpegurl') === 0) {
+    this.hookVideo();
+    this.showProgressBriefly();
+
     $(thisDocument).find('#crossfade img').hide();
     var video = $(thisDocument).find('video');
     video.show();
@@ -187,12 +212,16 @@ Controller.prototype.play = function(info) {
     xhr.send();
   }
   else if (mime.indexOf('audio/') != -1) {
+    this.hookVideo();
+    this.showProgressBriefly();
+
     this.stopVideo();
     $(thisDocument).find('#crossfade img').hide();
     $(thisDocument).find('#audio').show();
     if (!info.disableVisualizations) {
       $(thisDocument).find('video').remove();
       $(thisDocument).find('.media').append($('<video id="video" autoplay></video>'));
+      this.hookVideo();
     }
     var video = this.getVideoElement();
     video.src = url;
