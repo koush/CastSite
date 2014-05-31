@@ -23,9 +23,8 @@ Controller.prototype.toggleCaptions = function() {
 
 Controller.prototype.stopVideo = function() {
   var v = this.getVideoElement();
-  if (v) {
-    v.src = ''
-  }
+  v.src = ''
+  $(this.document).find('.progress').hide();
 }
 
 Controller.prototype.stop = function() {
@@ -72,6 +71,10 @@ Controller.prototype.hookVideo = function() {
 Controller.prototype.showProgressBriefly = function() {
   $(this.document).find('.progress').show();
   $(this.document).find('.progress').delay(3000).fadeOut();
+}
+
+Controller.prototype.showProgress = function() {
+  $(this.document).find('.progress').show();
 }
 
 Controller.prototype.play = function(info) {

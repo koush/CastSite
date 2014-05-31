@@ -18,6 +18,18 @@ window.onload = function() {
   }
   
   window.mediaManager = new cast.receiver.MediaManager(document.getElementById('video'));
+  window.mediaManager.onPause = function() {
+    window.controller.showProgress();
+  }
+  window.mediaManager.onPlay = function() {
+    window.controller.showProgressBriefly();
+  }
+  window.mediaManager.onSeek = function() {
+    window.controller.showProgressBriefly();
+  }
+  window.mediaManager.onStop = function() {
+    window.controller.hideProgress();
+  }
   window.mediaManager.onLoad = function(event) {
     var autoplay = getValue(event.data, ['autoplay']);
     window.controller.getVideoElement().autoplay = autoplay || true;
