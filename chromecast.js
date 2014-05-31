@@ -18,6 +18,7 @@ window.onload = function() {
   
   window.mediaManager.onLoad = function(event) {
     var info = {
+      disableVisualizations: true,
       url: getValue(event.data, ['media', 'contentId']),
       album: getValue(event.data, ['media', 'metadata', 'subtitle']),
       title: getValue(event.data, ['media', 'metadata', 'title']),

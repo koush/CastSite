@@ -196,7 +196,9 @@ Controller.prototype.play = function(info) {
     $(thisDocument).find('.media').append($('<video id="video" autoplay></video>'));
     var video = this.getVideoElement();
     video.src = url;
-    thisWindow.doMusicWithVideoObject();
+    if (!info.disableVisualizations) {
+      thisWindow.doMusicWithVideoObject();
+    }
     $(thisDocument).find('#album').text(info.album);
     $(thisDocument).find('#song').text(info.title);
     $(thisDocument).find('#albumArt').attr('src', 'icon.png');
