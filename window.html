@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html data-cast-api-enabled="true">
+  <head>
+    <link rel="stylesheet" href='window.css' />
+    <script src='jquery-2.1.1.min.js'></script>
+    <script src='controller.js'></script>
+    <script src='sketch.js'></script>
+    <script src='music.js'></script>
+  </head>
+  <body style="margin: 0">
+    <div id="player" class="player" style='display: none;'>
+      <div id="crossfade">
+        <img></img>
+        <img></img>
+      </div>
+    	<div class="media">
+    		<video id='video' autoplay></video>
+    	</div>
+      <div id='audio'>
+        <div id='audioInner'>
+          <div id='albumArtContainer'>
+            <img id='albumArt'/>
+          </div>
+          <div id='songInfo'>
+            <div><h1 id='album'></h1></div>
+            <div><h1 id='song'></h1></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id='splash' class='splash'>
+      <div id='innerSplash'>
+        <div>
+          <center>
+        <img src='icon.png' id='qrcode'/>
+      </center>
+        </div>
+
+        <div><h1 id='heading'>Open the AllCast application on your Android phone or tablet to view photos, videos, and play music on this receiver.</h1></div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,94 @@
+body {
+  background-color: #000;
+}
+
+body html {
+  overflow: hidden;
+}
+
+.player {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #f1f1f1;
+  font-family: 'Open Sans',sans-serif;
+  font-weight: 300;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+#splash {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  vertical-align: middle;
+}
+
+#innerSplash {
+  width: 66%;
+  height: auto;
+  margin: 0 auto;
+  position: relative;
+  padding-top: 40px;
+}
+
+#heading {
+  color: #f1f1f1;
+  text-align: center;
+}
+
+#crossfade {
+  position:relative;
+  margin:0 auto;
+}
+
+#crossfade img {
+  position:absolute;
+  left:0;
+  -webkit-transition: opacity 1s ease-in-out;
+  -moz-transition: opacity 1s ease-in-out;
+  -o-transition: opacity 1s ease-in-out;
+  transition: opacity 1s ease-in-out;
+}
+
+#crossfade img.transparent {
+opacity:0;
+}
+
+#audioInner {
+  position:absolute;
+}
+
+#albumArtContainer {
+  float: left;
+}
+
+#albumArt {
+  padding-top: 40px;
+  padding-left: 40px;
+}
+
+#songInfo {
+  float: left;
+  padding-top: 240px;
+  padding-left: 80px;
+}
+
+.player video {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.player img {
+  -webkit-transition: opacity 1s ease-in-out;
+  -moz-transition: opacity 1s ease-in-out;
+  -o-transition: opacity 1s ease-in-out;
+  transition: opacity 1s ease-in-out;
+}
