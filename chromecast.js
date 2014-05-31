@@ -12,11 +12,14 @@ function getValue(obj, keys) {
 window.onload = function() {
   window.mediaElement = document.getElementById('video');
   window.mediaManager = new cast.receiver.MediaManager(window.mediaElement);
+  window.mediaManager['origOnLoad'] = window.mediaManager.onLoad;
+
   window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
   window.castReceiverManager.start();
   window.controller = new Controller(window);
   
   window.mediaManager.onLoad = function(event) {
+    window.mediaManager[‘origOnLoad’](event);
     var info = {
       disableVisualizations: true,
       url: getValue(event.data, ['media', 'contentId']),
