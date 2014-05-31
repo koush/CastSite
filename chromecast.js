@@ -15,7 +15,7 @@ window.onload = function() {
 
   window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
   window.castReceiverManager.getCastMessageBus('urn:x-cast:com.koushikdutta.cast').onMessage = function(e) {
-    controller.toggleCaptions();
+    window.controller.toggleCaptions();
   }
   
   window.mediaManager = new cast.receiver.MediaManager(window.mediaElement);
@@ -33,5 +33,7 @@ window.onload = function() {
     window.controller.play(info);
   }
 
-  window.castReceiverManager.start();
+  window.castReceiverManager.start(window.castReceiverManager);
+  cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
+  cast.player.api.setLoggerLevel(cast.player.api.LoggerLevel.DEBUG);
 }
