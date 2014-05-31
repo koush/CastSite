@@ -190,14 +190,14 @@ Controller.prototype.play = function(info) {
     xhr.send();
   }
   else if (mime.indexOf('audio/') != -1) {
-    $(receiverWindow.contentWindow.document).find('video').remove();
-    $(receiverWindow.contentWindow.document).find('#crossfade img').hide();
-    $(receiverWindow.contentWindow.document).find('#audio').show();
-    $(receiverWindow.contentWindow.document).find('.media').append($('<video id="video" autoplay></video>'));
-    var video = getVideoElement();
+    $(thisDocument).find('video').remove();
+    $(thisDocument).find('#crossfade img').hide();
+    $(thisDocument).find('#audio').show();
+    $(thisDocument).find('.media').append($('<video id="video" autoplay></video>'));
+    var video = this.getVideoElement();
     video.src = url;
     video.onloadeddata = function() {
-      thisDocument.doMusicWithVideoObject();
+      thisWindow.doMusicWithVideoObject();
     };
     $(thisDocument).find('#album').text(info.album);
     $(thisDocument).find('#song').text(info.title);
