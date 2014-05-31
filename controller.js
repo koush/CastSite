@@ -17,6 +17,7 @@ Controller.prototype.loadImage = function(img, url) {
 
   var xhr = new XMLHttpRequest();
   xhr.open('GET', url, true);
+  var thisWindow = this.window;
   xhr.responseType = 'blob';
   xhr.onload = function(e) {
     img.src = thisWindow.URL.createObjectURL(this.response);
