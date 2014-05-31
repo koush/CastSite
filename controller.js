@@ -9,7 +9,7 @@ function Controller(w, useXhr) {
   this.useXhr = useXhr;
 }
 
-Controller.loadImage = function(img, url) {
+Controller.prototype.loadImage = function(img, url) {
   if (!this.useXhr) {
     img.src = url;
     return;
