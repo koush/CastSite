@@ -19,7 +19,7 @@ window.onload = function() {
   window.controller = new Controller(window);
   
   window.mediaManager.onLoad = function(event) {
-    window.mediaManager[‘origOnLoad’](event);
+    window.mediaManager['origOnLoad'](event);
     var info = {
       disableVisualizations: true,
       url: getValue(event.data, ['media', 'contentId']),
