@@ -70,6 +70,8 @@ Controller.prototype.hookVideo = function() {
   
   this.getVideoElement().addEventListener('playing', function() {
     this.showProgressBriefly();
+    $(this.document).find('#play').attr('style', 'opacity: 100').attr('src', 'ic_av_play_over_video.png');
+    $(this.document).find('#play').animate({width:'+=200', height: '+=200', opacity: '0'}, 500)
   }.bind(this));
 
   this.getVideoElement().addEventListener('seeking', function() {
@@ -82,6 +84,8 @@ Controller.prototype.hookVideo = function() {
 
   this.getVideoElement().addEventListener('pause', function() {
     this.showProgress();
+    $(this.document).find('#play').attr('style', 'opacity: 100').attr('src', 'ic_av_pause_over_video.png');
+    $(this.document).find('#play').animate({width:'+=200', height: '+=200', opacity: '0'}, 500)
   }.bind(this));
 }
 

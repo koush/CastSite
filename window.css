@@ -86,7 +86,7 @@ opacity:0;
   height: 100%;
 }
 
-.player img {
+#crossfade img {
   -webkit-transition: opacity 1s ease-in-out;
   -moz-transition: opacity 1s ease-in-out;
   -o-transition: opacity 1s ease-in-out;
