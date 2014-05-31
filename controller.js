@@ -22,7 +22,7 @@ Controller.prototype.toggleCaptions = function() {
 }
 
 Controller.prototype.stopVideo = function() {
-  var v = getVideoElement();
+  var v = this.getVideoElement();
   if (v) {
     v.src = ''
   }
