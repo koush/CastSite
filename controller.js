@@ -66,6 +66,22 @@ Controller.prototype.hookVideo = function() {
       $(this.document).find('#progress')[0].style.width = pct + '%';
     }
   }.bind(this);
+  
+  this.getVideoElement().onplaying = function() {
+    this.showProgressBriefly();
+  }.bind(this);
+
+  this.getVideoElement().onseeking = function() {
+    this.showProgressBriefly();
+  }.bind(this);
+
+  this.getVideoElement().onended = function() {
+    $(this.document).find('.progress').hide();
+  }.bind(this);
+
+  this.getVideoElement().onpause = function() {
+    this.showProgress();
+  }.bind(this);
 }
 
 Controller.prototype.showProgressBriefly = function() {
