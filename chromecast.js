@@ -20,7 +20,7 @@ window.onload = function() {
     var info = {
       url: getValue(event.data, ['media', 'contentId']),
       album: getValue(event.data, ['media', 'metadata', 'subtitle']),
-      subtitles: sampleplayer.getValue_(event.data, ['media', 'customData', 'subtitles']),
+      subtitles: getValue(event.data, ['media', 'customData', 'subtitles']),
       albumArt: getValue(event.data, ['media', 'metadata', 'images', 0, 'url']),
       mime: getValue(event.data, ['media', 'contentType']),
     }
