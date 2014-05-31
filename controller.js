@@ -175,7 +175,6 @@ Controller.prototype.play = function(info) {
       $(this).width(w);
       $(this).height(h);
       $(this).show();
-      // player.append(topImage);
       $(topImage).toggleClass("transparent");
       $(bottomImage).toggleClass("transparent");
     }); 
@@ -190,10 +189,12 @@ Controller.prototype.play = function(info) {
     xhr.send();
   }
   else if (mime.indexOf('audio/') != -1) {
-    $(thisDocument).find('video').remove();
     $(thisDocument).find('#crossfade img').hide();
     $(thisDocument).find('#audio').show();
-    $(thisDocument).find('.media').append($('<video id="video" autoplay></video>'));
+    if (!info.disableVisualizations) {
+      $(thisDocument).find('video').remove();
+      $(thisDocument).find('.media').append($('<video id="video" autoplay></video>'));
+    }
     var video = this.getVideoElement();
     video.src = url;
     if (!info.disableVisualizations) {

@@ -30,7 +30,6 @@ window.onload = function() {
     }
     
     window.controller.play(info);
-    window.mediaManager.setMediaElement(document.getElementById('video'));
   }
 
   window.castReceiverManager.start(window.castReceiverManager);
