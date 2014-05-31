@@ -19,6 +19,9 @@ window.onload = function() {
   
   window.mediaManager = new cast.receiver.MediaManager(document.getElementById('video'));
   window.mediaManager.onLoad = function(event) {
+    var autoplay = getValue(event.data, ['autoplay']);
+    window.controller.getVideoElement().autoplay = autoplay || true;
+
     var info = {
       disableVisualizations: true,
       url: getValue(event.data, ['media', 'contentId']),
