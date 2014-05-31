@@ -5,6 +5,7 @@ var hostProtocol;
 function Controller(w) {
   this.window = w;
   this.document = this.window.document;
+  this.hookVideo();
 }
 
 Controller.prototype.getVideoElement = function() {
@@ -67,21 +68,21 @@ Controller.prototype.hookVideo = function() {
     }
   }.bind(this);
   
-  this.getVideoElement().onplaying = function() {
+  this.getVideoElement().addEventListener('playing', function() {
     this.showProgressBriefly();
-  }.bind(this);
+  }.bind(this));
 
-  this.getVideoElement().onseeking = function() {
+  this.getVideoElement().addEventListener('seeking', function() {
     this.showProgressBriefly();
-  }.bind(this);
+  }.bind(this));
 
-  this.getVideoElement().onended = function() {
+  this.getVideoElement().addEventListener('ended', function() {
     $(this.document).find('.progress').hide();
-  }.bind(this);
+  }.bind(this));
 
-  this.getVideoElement().onpause = function() {
+  this.getVideoElement().addEventListener('pause', function() {
     this.showProgress();
-  }.bind(this);
+  }.bind(this));
 }
 
 Controller.prototype.showProgressBriefly = function() {
@@ -111,7 +112,6 @@ Controller.prototype.play = function(info) {
   hostProtocol = null;
 
   if (mime.indexOf('video/') != -1) {
-    this.hookVideo();
     this.showProgressBriefly();
     
     $(thisDocument).find('#crossfade img').hide();
@@ -138,7 +138,6 @@ Controller.prototype.play = function(info) {
     })
   }
   else if (mime.indexOf('application/x-mpegurl') === 0) {
-    this.hookVideo();
     this.showProgressBriefly();
 
     $(thisDocument).find('#crossfade img').hide();
@@ -231,7 +230,6 @@ Controller.prototype.play = function(info) {
     xhr.send();
   }
   else if (mime.indexOf('audio/') != -1) {
-    this.hookVideo();
     this.showProgressBriefly();
 
     this.stopVideo();
