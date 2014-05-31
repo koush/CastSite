@@ -10,12 +10,15 @@ function getValue(obj, keys) {
 }
 
 window.onload = function() {
-  window.mediaElement = document.getElementById('video');
-  window.mediaManager = new cast.receiver.MediaManager(window.mediaElement);
-
-  window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
-  window.castReceiverManager.start();
   window.controller = new Controller(window);
+  window.mediaElement = document.getElementById('video');
+
+  window.mediaManager = new cast.receiver.MediaManager(window.mediaElement);
+  window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
+  window.castReceiverManager.getCastMessageBus('urn:x-cast:com.koushikdutta.cast').onMessage = function(e) {
+    controller.toggleCaptions();
+  }
+  window.castReceiverManager.start();
   
   window.mediaManager.onLoad = function(event) {
     var info = {
