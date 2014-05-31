@@ -18,16 +18,24 @@ window.onload = function() {
   }
   
   window.mediaManager = new cast.receiver.MediaManager(document.getElementById('video'));
-  window.mediaManager.onPause = function() {
+  var origPause = window.mediaManager.onPause;
+  window.mediaManager.onPause = function(event) {
+    origPause(event);
     window.controller.showProgress();
   }
-  window.mediaManager.onPlay = function() {
+  var origPlay = window.mediaManager.onPlay;
+  window.mediaManager.onPlay = function(event) {
+    origPlay(event);
     window.controller.showProgressBriefly();
   }
-  window.mediaManager.onSeek = function() {
+  var origSeek = window.mediaManager.onSeek;
+  window.mediaManager.onSeek = function(event) {
+    origSeek(event);
     window.controller.showProgressBriefly();
   }
-  window.mediaManager.onStop = function() {
+  var origStop = window.mediaManager.onStop;
+  window.mediaManager.onStop = function(event) {
+    origStop(event);
     window.controller.hideProgress();
   }
   window.mediaManager.onLoad = function(event) {
