@@ -265,7 +265,7 @@ Controller.prototype.play = function(info) {
     }
     $(thisDocument).find('#album').text(info.album);
     $(thisDocument).find('#song').text(info.title);
-    $(thisDocument).find('#albumArt').attr('src', 'icon.png');
+    $(thisDocument).find('#albumArt').attr('src', '/common/icon.png');
     if (info.albumArt) {
       this.loadImage($(thisDocument).find('#albumArt')[0], info.albumArt);
     }
