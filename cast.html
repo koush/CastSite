@@ -2,13 +2,13 @@
 <html>
   <head>
     <link rel="stylesheet" href='window.css' />
-    <script src='jquery-2.1.1.min.js'></script>
+    <script src='/common/jquery-2.1.1.min.js'></script>
     <script src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script>
     <script src="//www.gstatic.com/cast/sdk/libs/mediaplayer/0.7.0/media_player.js"></script>
-    <script src='controller.js'></script>
+    <script src='/common/controller.js'></script>
+    <script src='/common/sketch.min.js'></script>
+    <script src='/common/music.js'></script>
     <script src='chromecast.js'></script>
-    <script src='sketch.min.js'></script>
-    <script src='music.js'></script>
   </head>
   <body style="margin: 0">
     <div id="player" class="player" style='display: none;'>
@@ -35,7 +35,7 @@
       <center style="width: 100%; height: 100%; position: absolute;">
         <table style="height: 100%;">
           <tbody>
-            <tr><td><div><img width='432' height='432' src="ic_av_play_over_video.png" id="play" style='display: none;'></div></td></tr>
+            <tr><td><div><img width='432' height='432' src="/common/ic_av_play_over_video.png" id="play" style='display: none;'></div></td></tr>
           </tbody>
         </table>
       </center>
@@ -45,7 +45,7 @@
       <div id='innerSplash'>
         <div>
           <center>
-            <img src='icon.png' id='qrcode'/>
+            <img src='/common/icon.png' id='qrcode'/>
           </center>
         </div>
       </div>
