@@ -88,7 +88,7 @@ Controller.prototype.hookVideo = function() {
   
   this.getVideoElement().addEventListener('playing', function() {
     this.showProgressBriefly();
-    $(this.document).find('#play').attr('style', 'opacity: 100').attr('src', '/common/ic_av_play_over_video.png');
+    $(this.document).find('#play').attr('style', 'opacity: 100').attr('src', 'common/ic_av_play_over_video.png');
     $(this.document).find('#play').animate({width:'+=200', height: '+=200', opacity: '0'}, 500)
   }.bind(this));
 
@@ -102,7 +102,7 @@ Controller.prototype.hookVideo = function() {
 
   this.getVideoElement().addEventListener('pause', function() {
     this.showProgress();
-    $(this.document).find('#play').attr('style', 'opacity: 100').attr('src', '/common/ic_av_pause_over_video.png');
+    $(this.document).find('#play').attr('style', 'opacity: 100').attr('src', 'common/ic_av_pause_over_video.png');
     $(this.document).find('#play').animate({width:'+=200', height: '+=200', opacity: '0'}, 500)
   }.bind(this));
 }
@@ -265,7 +265,7 @@ Controller.prototype.play = function(info) {
     }
     $(thisDocument).find('#album').text(info.album);
     $(thisDocument).find('#song').text(info.title);
-    $(thisDocument).find('#albumArt').attr('src', '/common/icon.png');
+    $(thisDocument).find('#albumArt').attr('src', 'common/icon.png');
     if (info.albumArt) {
       this.loadImage($(thisDocument).find('#albumArt')[0], info.albumArt);
     }
