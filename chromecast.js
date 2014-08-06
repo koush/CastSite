@@ -16,12 +16,13 @@ window.onload = function() {
   window.castReceiverManager.getCastMessageBus('urn:x-cast:com.koushikdutta.cast').onMessage = function(e) {
     window.controller.toggleCaptions();
   }
+
+  window.mediaManager = new cast.receiver.MediaManager(document.getElementById('video'));
   
-  window.castReceiverManager.addEventListener('systemvolumechanged', function(e) {
-    console.log(e);
+  window.mediaManager.addEventListener('setvolume', function(e) {
+    window.controller.volumeChanged(e.data.volume.level * 100);
   });
   
-  window.mediaManager = new cast.receiver.MediaManager(document.getElementById('video'));
   window.mediaManager.onLoad = function(event) {
     var autoplay = getValue(event.data, ['autoplay']);
     window.controller.getVideoElement().autoplay = autoplay || true;
