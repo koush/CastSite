@@ -35,7 +35,20 @@
         <img id='progress-img' src="common/ic_av_play_over_video.png">
       </div>
       <div id='progress' class='progress'></div>
-      <center style="width: 100%; height: 100%; position: absolute;">
+      <center id='volume' class='fullscreen-center'>
+        <table style="height: 100%;">
+          <tbody>
+            <tr>
+              <td><div class='volume-bar' style='width:8px; height:64px; margin-top:64px'></div></td>
+              <td><div class='volume-bar' style='width:8px; height:80px; margin-top:48px'></div></td>
+              <td><div class='volume-bar' style='width:8px; height:96px; margin-top:32px'></div></td>
+              <td><div class='volume-bar' style='width:8px; height:112px; margin-top:16px'></div></td>
+              <td><div class='volume-bar' style='width:8px; height:128px; margin-top:0px'></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </center>
+      <center class='fullscreen-center'>
         <table style="height: 100%;">
           <tbody>
             <tr><td><div><img width='432' height='432' src="common/ic_av_play_over_video.png" id="play" style='display: none;'></div></td></tr>

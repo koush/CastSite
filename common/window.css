@@ -129,3 +129,22 @@ opacity:0;
   max-width:64px;
   max-height:64px;
 }
+
+.fullscreen-center {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+#volume {
+  display: none;
+}
+
+.volume-bar {
+  background-color: white;
+  margin-left:16px; 
+}
+
+.volume-bar-transparent {
+  background-color:rgba(255,255,255,0.3);
+}

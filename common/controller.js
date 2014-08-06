@@ -85,7 +85,7 @@ Controller.prototype.hookVideo = function() {
       $(this.document).find('#progress')[0].style.width = pct + '%';
     }
   }.bind(this));
-  
+
   this.getVideoElement().addEventListener('playing', function() {
     this.showProgressBriefly();
     $(this.document).find('#progress-img').attr('src', 'common/ic_av_play_over_video.png');
@@ -123,6 +123,26 @@ Controller.prototype.showProgress = function() {
 Controller.prototype.hideProgress = function() {
   $(this.document).find('.progress').stop();
   $(this.document).find('.progress').hide();
+}
+
+Controller.prototype.volumeChanged = function(newVolume) {
+  var bars = $(this.document).find('#volume td div');
+  var step = 100 / bars.length;
+  
+  var tot = 0;
+  for (var i = 0; i < step; i++) {
+    if (newVolume > tot) {
+      $(bars[i]).removeClass('volume-bar-transparent');
+    }
+    else {
+      $(bars[i]).addClass('volume-bar-transparent');
+    }
+    tot += step;
+  }
+
+  $(this.document).find('#volume').stop();
+  $(this.document).find('#volume').show();
+  $(this.document).find('#volume').delay(3000).fadeOut();
 }
 
 Controller.prototype.play = function(info) {
