@@ -151,6 +151,13 @@ Controller.prototype.play = function(info) {
   var url = info.url;
   var mime = info.mime.toLowerCase();
 
+  if (info.upsell) {
+    $(this.document).find('.watermark').show();
+  }
+  else {
+    $(this.document).find('.watermark').hide();
+  }
+
   $(thisDocument).find('#splash').hide();
   $(thisDocument).find('#audio').hide();
   $(thisDocument).find('#player').show();
