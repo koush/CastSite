@@ -17,6 +17,10 @@ window.onload = function() {
     window.controller.toggleCaptions();
   }
   
+  window.castReceiverManager.onSystemVolumeChanged = function(e) {
+    console.log(e);
+  }
+  
   window.mediaManager = new cast.receiver.MediaManager(document.getElementById('video'));
   window.mediaManager.onLoad = function(event) {
     var autoplay = getValue(event.data, ['autoplay']);
