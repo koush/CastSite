@@ -35,6 +35,7 @@ window.onload = function() {
       subtitles: getValue(event.data, ['media', 'customData', 'subtitles']),
       albumArt: getValue(event.data, ['media', 'metadata', 'images', 0, 'url']),
       mime: getValue(event.data, ['media', 'contentType']),
+      upsell: getValue(event.data, ['media', 'customData', 'upsell']),
     }
     
     window.controller.play(info);
