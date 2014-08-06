@@ -100,7 +100,8 @@ opacity:0;
 #progress-outer {
   height: 12px;
   background-color: rgba(255,255,255,0.2);
-  margin-bottom: 16px;
+  margin-bottom: 32px;
+  margin-left: 72px;
   position: fixed;
   width: 100%;
   bottom: 0px;
@@ -110,9 +111,21 @@ opacity:0;
 #progress {
   height: 12px;
   background-color: rgba(0,153,204,0.8);
-  margin-bottom: 16px;
+  margin-bottom: 32px;
+  margin-left: 72px;
   position: fixed;
   width: 0%;
   bottom: 0px;
   overflow: hidden;
+}
+
+#progress-state {
+  position: fixed;
+  bottom: 0px;
+  overflow: hidden;
+}
+
+#progress-img {
+  max-width:64px;
+  max-height:64px;
 }

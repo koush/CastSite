@@ -43,7 +43,7 @@ Controller.prototype.toggleCaptions = function() {
 Controller.prototype.stopVideo = function() {
   var v = this.getVideoElement();
   v.src = ''
-  $(this.document).find('.progress').hide();
+  this.hideProgress();
 }
 
 Controller.prototype.stop = function() {
@@ -59,7 +59,7 @@ Controller.prototype.seek = function(position) {
 Controller.prototype.pause = function() {
   var v = this.getVideoElement();
   v.pause();
-  $(this.document).find('.progress').show();
+  this.showProgress();
 }
 
 Controller.prototype.resume = function() {
@@ -88,6 +88,7 @@ Controller.prototype.hookVideo = function() {
   
   this.getVideoElement().addEventListener('playing', function() {
     this.showProgressBriefly();
+    $(this.document).find('#progress-img').attr('src', 'common/ic_av_play_over_video.png');
     $(this.document).find('#play').attr('style', 'opacity: 100').attr('src', 'common/ic_av_play_over_video.png');
     $(this.document).find('#play').animate({width:'+=200', height: '+=200', opacity: '0'}, 500)
   }.bind(this));
@@ -97,23 +98,31 @@ Controller.prototype.hookVideo = function() {
   }.bind(this));
 
   this.getVideoElement().addEventListener('ended', function() {
-    $(this.document).find('.progress').hide();
+    this.hideProgress();
   }.bind(this));
 
   this.getVideoElement().addEventListener('pause', function() {
     this.showProgress();
+    $(this.document).find('#progress-img').attr('src', 'common/ic_av_pause_over_video.png');
     $(this.document).find('#play').attr('style', 'opacity: 100').attr('src', 'common/ic_av_pause_over_video.png');
     $(this.document).find('#play').animate({width:'+=200', height: '+=200', opacity: '0'}, 500)
   }.bind(this));
 }
 
 Controller.prototype.showProgressBriefly = function() {
+  $(this.document).find('.progress').stop();
   $(this.document).find('.progress').show();
   $(this.document).find('.progress').delay(3000).fadeOut();
 }
 
 Controller.prototype.showProgress = function() {
+  $(this.document).find('.progress').stop();
   $(this.document).find('.progress').show();
+}
+
+Controller.prototype.hideProgress = function() {
+  $(this.document).find('.progress').stop();
+  $(this.document).find('.progress').hide();
 }
 
 Controller.prototype.play = function(info) {
@@ -202,6 +211,8 @@ Controller.prototype.play = function(info) {
     })
   }
   else if (mime.indexOf('image/') != -1) {
+    this.hideProgress();
+
     this.stopVideo();
     $(thisDocument).find('video').hide();
     $(thisDocument).find('#audio').hide();
