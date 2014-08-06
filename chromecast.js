@@ -17,9 +17,9 @@ window.onload = function() {
     window.controller.toggleCaptions();
   }
   
-  window.castReceiverManager.onSystemVolumeChanged = function(e) {
+  window.castReceiverManager.addEventListener('systemvolumechanged', function(e) {
     console.log(e);
-  }
+  });
   
   window.mediaManager = new cast.receiver.MediaManager(document.getElementById('video'));
   window.mediaManager.onLoad = function(event) {
