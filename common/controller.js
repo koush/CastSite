@@ -110,18 +110,18 @@ Controller.prototype.hookVideo = function() {
 }
 
 Controller.prototype.showProgressBriefly = function() {
-  $(this.document).find('.progress').stop();
+  $(this.document).find('.progress').stop(true);
   $(this.document).find('.progress').show();
   $(this.document).find('.progress').delay(3000).fadeOut();
 }
 
 Controller.prototype.showProgress = function() {
-  $(this.document).find('.progress').stop();
+  $(this.document).find('.progress').stop(true);
   $(this.document).find('.progress').show();
 }
 
 Controller.prototype.hideProgress = function() {
-  $(this.document).find('.progress').stop();
+  $(this.document).find('.progress').stop(true);
   $(this.document).find('.progress').hide();
 }
 
@@ -140,7 +140,7 @@ Controller.prototype.volumeChanged = function(newVolume) {
     tot += step;
   }
 
-  $(this.document).find('#volume').stop();
+  $(this.document).find('#volume').stop(true);
   $(this.document).find('#volume').show();
   $(this.document).find('#volume').delay(3000).fadeOut();
 }
