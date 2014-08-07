@@ -1,3 +1,6 @@
+// fix for captioning or something
+window['VTTCue'] = window['VTTCue'] || window['TextTrackCue'];
+
 function getValue(obj, keys) {
   for (var i = 0; i < keys.length; i++) {
     if (obj === null || obj === undefined) {
