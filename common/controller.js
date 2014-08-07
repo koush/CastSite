@@ -184,14 +184,14 @@ Controller.prototype.play = function(info) {
     var track = $('<track default>');
     $(track).attr('kind', 'subtitles');
     $(track).attr('src', info.subtitles);
-    $(track).attr('srclang', 'en');
+    $(track).attr('srclang', 'English');
     $(video).attr('crossorigin', 'anonymous');
     $(video).append(track);
     $(track).load(function() {
       $(video).removeAttr('crossorigin');
       $(video).attr('src', url);
       $.each(video[0].textTracks, function(i, t) {
-        // t.mode = 'hidden';
+        t.mode = 'hidden';
       });
     })
   }
