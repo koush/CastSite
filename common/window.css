@@ -165,3 +165,8 @@ opacity:0;
   max-width:128px;
   max-height:128px;
 }
+
+#allcast-title {
+  color: white;
+  font-size: 72px;
+}
