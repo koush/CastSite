@@ -50,10 +50,10 @@ body html {
 #crossfade img {
   position:absolute;
   left:0;
-  -webkit-transition: opacity 1s ease-in-out;
+/*  -webkit-transition: opacity 1s ease-in-out;
   -moz-transition: opacity 1s ease-in-out;
   -o-transition: opacity 1s ease-in-out;
-  transition: opacity 1s ease-in-out;
+  transition: opacity 1s ease-in-out;*/
 }
 
 #crossfade img.transparent {
@@ -84,13 +84,6 @@ opacity:0;
   position: absolute;
   width: 100%;
   height: 100%;
-}
-
-#crossfade img {
-  -webkit-transition: opacity 1s ease-in-out;
-  -moz-transition: opacity 1s ease-in-out;
-  -o-transition: opacity 1s ease-in-out;
-  transition: opacity 1s ease-in-out;
 }
 
 .progress {
