@@ -68,25 +68,12 @@ Controller.prototype.resume = function() {
   this.showProgressBriefly();
 }
 
-Controller.prototype.h264 = function(width, height) {
-  $(this.document).find('#splash').hide();
-  $(this.document).find('#player').show();
-  var video = this.getVideoElement();
-  $(video).hide();
-  var canvas = $(this.document).find('#mirror')[0];
-  $(canvas).show();
-  canvas.width = width;
-  canvas.height = height;
-  return canvas;  
-}
-
-Controller.prototype.webrtc = function(width, height) {
+Controller.prototype.mirror = function(sessionUrl) {
   $(this.document).find('#splash').hide();
   $(this.document).find('#player').show();
   var video = this.getVideoElement();
   $(video).show();
-  $(this.document).find('#mirror').hide();
-  connectWebRTCSession(sessionUrl, video);
+  connectMirrorSession(sessionUrl, video);
 }
 
 Controller.prototype.hookVideo = function() {
