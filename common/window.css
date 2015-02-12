@@ -41,6 +41,8 @@ body html {
 #heading {
   color: #f1f1f1;
   text-align: center;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 #crossfade {
@@ -163,11 +165,6 @@ opacity:0;
 #allcast-title {
   color: white;
   font-size: 72px;
-}
-
-#allcast-subtitle {
-  margin-left: 20px;
-  margin-right: 20px;
 }
 
 .splash-stores {
