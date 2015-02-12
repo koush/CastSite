@@ -189,7 +189,6 @@ Controller.prototype.play = function(info) {
     $(thisDocument).find('#crossfade img').hide();
     var video = $(thisDocument).find('video');
     video.show();
-    $(thisDocument).find('#mirror').hide();
     $('track').remove();
     if (!info.subtitles) {
       $(video).attr('src', url);

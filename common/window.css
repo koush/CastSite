@@ -164,3 +164,9 @@ opacity:0;
   color: white;
   font-size: 72px;
 }
+
+.splash-stores {
+  position: absolute;
+  margin-left: 100%;
+  margin-top: 40%;
+}
