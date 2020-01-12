@@ -17,7 +17,13 @@ window.onload = function() {
 
   window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
   window.castReceiverManager.getCastMessageBus('urn:x-cast:com.koushikdutta.cast').onMessage = function(e) {
-    window.controller.toggleCaptions();
+    try {
+      var data = JSON.parse(e.data);
+    }
+    catch (e) {
+      data = {};
+    }
+    window.controller.toggleCaptions(data);
   }
 
   window.mediaManager = new cast.receiver.MediaManager(document.getElementById('video'));

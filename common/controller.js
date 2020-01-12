@@ -30,14 +30,34 @@ Controller.prototype.getVideoElement = function() {
   return $(this.document).find('video')[0];
 }
 
-Controller.prototype.toggleCaptions = function() {
+Controller.prototype.toggleCaptions = function(data) {
   var video = this.getVideoElement();
-  $.each(video.textTracks, function(i, t) {
-    if (t.mode != 'showing')
-      t.mode = 'showing';
-    else
-      t.mode = 'hidden';
-  });
+  if (data.subtitles) {
+    var thisDocument = this.document;
+    var video = $(thisDocument).find('video');
+    video.find('track').remove();
+    var track = $('<track default>');
+    $(track).attr('kind', 'subtitles');
+    $(track).attr('src', data.subtitles);
+    $(track).attr('srclang', 'English');
+    // $(video).attr('crossorigin', 'anonymous');
+    $(video).append(track);
+    $(track).load(function() {
+      // $(video).removeAttr('crossorigin');
+      // $(video).attr('src', url);
+      $.each(video[0].textTracks, function(i, t) {
+        t.mode = 'showing';
+      });
+    })
+  }
+  else {
+    $.each(video.textTracks, function(i, t) {
+      if (t.mode != 'showing')
+        t.mode = 'showing';
+      else
+        t.mode = 'hidden';
+    });
+  }
 }
 
 Controller.prototype.stopVideo = function() {
@@ -78,6 +98,20 @@ Controller.prototype.h264 = function(width, height) {
   canvas.width = width;
   canvas.height = height;
   return canvas;  
+}
+
+Controller.prototype.video_decode = function(width, height) {
+  $(this.document).find('#splash').hide();
+  $(this.document).find('#player').show();
+  var video = this.getVideoElement();
+  $(video).hide();
+  var canvas = $(this.document).find('#listener')[0];
+  $(canvas).show();
+  canvas.width = width;
+  canvas.height = height;
+  $(this.document).find('#mirror').hide();
+  
+  return new this.window.PepperDecoder(1280, 720)
 }
 
 Controller.prototype.webrtc = function(width, height) {
@@ -183,13 +217,14 @@ Controller.prototype.play = function(info) {
   host = null;
   hostProtocol = null;
 
+
   if (mime.indexOf('video/') != -1) {
     this.showProgressBriefly();
     
     $(thisDocument).find('#crossfade img').hide();
     var video = $(thisDocument).find('video');
+    video.find('track').remove();
     video.show();
-    $('track').remove();
     if (!info.subtitles) {
       $(video).attr('src', url);
       return;
@@ -205,7 +240,7 @@ Controller.prototype.play = function(info) {
       $(video).removeAttr('crossorigin');
       $(video).attr('src', url);
       $.each(video[0].textTracks, function(i, t) {
-        t.mode = 'hidden';
+        t.mode = 'showing';
       });
     })
   }
@@ -214,8 +249,8 @@ Controller.prototype.play = function(info) {
 
     $(thisDocument).find('#crossfade img').hide();
     var video = $(thisDocument).find('video');
+    video.find('track').remove();
     video.show();
-    $('track').remove();
     
     var loadSrc = function() {
       host = new cast.player.api.Host({'mediaElement': video[0], 'url': url});
@@ -247,7 +282,7 @@ Controller.prototype.play = function(info) {
       $(video).removeAttr('crossorigin');
       loadSrc();
       $.each(video[0].textTracks, function(i, t) {
-        t.mode = 'hidden';
+        t.mode = 'showing';
       });
     })
   }
