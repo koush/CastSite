@@ -40,10 +40,10 @@ Controller.prototype.toggleCaptions = function(data) {
     $(track).attr('kind', 'subtitles');
     $(track).attr('src', data.subtitles);
     $(track).attr('srclang', 'English');
-    // $(video).attr('crossorigin', 'anonymous');
+    $(video).attr('crossorigin', 'anonymous');
     $(video).append(track);
     $(track).load(function() {
-      // $(video).removeAttr('crossorigin');
+      $(video).removeAttr('crossorigin');
       // $(video).attr('src', url);
       $.each(video[0].textTracks, function(i, t) {
         t.mode = 'showing';
